@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 健康追蹤與運動管理平台 | FHIR Demo</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-heartbeat logo-icon"></i>
+                <span class="logo-text">AI Health</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-target="home-section">
+                        <i class="fas fa-home"></i> <span>首頁</span>
+                    </li>
+                    <li class="nav-item" data-target="login-section">
+                        <i class="fas fa-user-circle"></i> <span>角色登入</span>
+                    </li>
+                    <li class="nav-item" data-target="dashboard-section">
+                        <i class="fas fa-chart-line"></i> <span>健康儀表板</span>
+                    </li>
+                    <li class="nav-item" data-target="input-section">
+                        <i class="fas fa-plus-circle"></i> <span>資料輸入</span>
+                    </li>
+                    <li class="nav-item" data-target="fhir-section">
+                        <i class="fas fa-file-code"></i> <span>FHIR JSON</span>
+                    </li>
+                    <li class="nav-item" data-target="trend-section">
+                        <i class="fas fa-chart-area"></i> <span>健康趨勢</span>
+                    </li>
+                    <li class="nav-item" data-target="ai-section">
+                        <i class="fas fa-robot"></i> <span>AI 健康分析</span>
+                    </li>
+                    <li class="nav-item" data-target="share-section">
+                        <i class="fas fa-share-alt"></i> <span>授權分享</span>
+                    </li>
+                    <li class="nav-item" data-target="blockchain-section">
+                        <i class="fas fa-link"></i> <span>區塊鏈紀錄</span>
+                    </li>
+                    <li class="nav-item" data-target="notify-section">
+                        <i class="fas fa-bell"></i> <span>通知中心</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="https://ui-avatars.com/api/?name=User&background=0ea5e9&color=fff" alt="User Avatar" id="current-avatar">
+                    <div class="user-details">
+                        <p class="user-name" id="current-username">一般使用者</p>
+                        <p class="user-role" id="current-role-display">Patient</p>
+                    </div>
+                </div>
+                <button class="btn-reset" id="btn-reset-data"><i class="fas fa-undo"></i> 重置 Demo</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Section: Home -->
+            <section id="home-section" class="content-section active">
+                <div class="hero">
+                    <h1>AI 健康追蹤與運動管理平台</h1>
+                    <p class="hero-subtitle">以 FHIR 標準建構的個人健康數據中心，結合 AI 分析與區塊鏈授權機制。</p>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3><i class="fas fa-bullseye"></i> 核心價值</h3>
+                        <ul>
+                            <li><strong>資料標準化：</strong> 採用國際 FHIR 標準，確保資料互通性。</li>
+                            <li><strong>AI 精準分析：</strong> 根據個人數據提供專業健康與運動建議。</li>
+                            <li><strong>安全授權：</strong> 區塊鏈紀錄授權，保障資料主權。</li>
+                            <li><strong>全方位追蹤：</strong> 整合生理指標與運動數據。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="demo-flow">
+                    <h3><i class="fas fa-project-diagram"></i> Demo 操作流程圖</h3>
+                    <div class="flow-container">
+                        <div class="flow-step">
+                            <div class="step-icon"><i class="fas fa-edit"></i></div>
+                            <p>健康資料輸入</p>
+                        </div>
+                        <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                        <div class="flow-step">
+                            <div class="step-icon"><i class="fas fa-file-code"></i></div>
+                            <p>FHIR Observation 轉換</p>
+                        </div>
+                        <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                        <div class="flow-step">
+                            <div class="step-icon"><i class="fas fa-server"></i></div>
+                            <p>HAPI FHIR 模擬同步</p>
+                        </div>
+                        <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                        <div class="flow-step">
+                            <div class="step-icon"><i class="fas fa-robot"></i></div>
+                            <p>AI 健康智能分析</p>
+                        </div>
+                        <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                        <div class="flow-step">
+                            <div class="step-icon"><i class="fas fa-shield-alt"></i></div>
+                            <p>區塊鏈授權分享</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Login -->
+            <section id="login-section" class="content-section">
+                <div class="login-container">
+                    <div class="section-header text-center">
+                        <h2>歡迎回來</h2>
+                        <p>請選擇您的角色以登入 AI 健康追蹤平台</p>
+                    </div>
+                    <div class="role-grid">
+                        <div class="role-card" data-role="user">
+                            <div class="role-icon-wrapper"><i class="fas fa-user-injured"></i></div>
+                            <h3>一般使用者</h3>
+                            <span class="role-tag">Patient</span>
+                            <p>管理個人健康數據、查看 AI 建議、進行資料授權。</p>
+                            <button class="btn btn-primary btn-select-role">登入使用者視角</button>
+                        </div>
+                        <div class="role-card" data-role="coach">
+                            <div class="role-icon-wrapper"><i class="fas fa-dumbbell"></i></div>
+                            <h3>健身教練</h3>
+                            <span class="role-tag">Coach</span>
+                            <p>監測學員運動表現、提供訓練指導、分析體能數據。</p>
+                            <button class="btn btn-secondary btn-select-role">登入教練視角</button>
+                        </div>
+                        <div class="role-card" data-role="nutritionist">
+                            <div class="role-icon-wrapper"><i class="fas fa-apple-alt"></i></div>
+                            <h3>營養師</h3>
+                            <span class="role-tag">Nutritionist</span>
+                            <p>分析生理量測指標、設計飲食計畫、追蹤營養狀態。</p>
+                            <button class="btn btn-secondary btn-select-role">登入營養師視角</button>
+                        </div>
+                        <div class="role-card" data-role="admin">
+                            <div class="role-icon-wrapper"><i class="fas fa-user-shield"></i></div>
+                            <h3>系統管理員</h3>
+                            <span class="role-tag">Admin</span>
+                            <p>維護 FHIR 資料交換中心、管理用戶權限與系統日誌。</p>
+                            <button class="btn btn-secondary btn-select-role">進入管理後台</button>
+                        </div>
+                    </div>
+                    <div class="login-footer">
+                        <p><i class="fas fa-info-circle"></i> 這是展示用介面，點擊後即可模擬進入系統。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Dashboard -->
+            <section id="dashboard-section" class="content-section">
+                <div class="section-header">
+                    <h2>健康儀表板 <span class="badge" id="role-badge">一般使用者</span></h2>
+                    <p>即時監控您的生理指標與健康狀態。</p>
+                </div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">血壓 (BP)</span>
+                            <i class="fas fa-tint kpi-icon text-red"></i>
+                        </div>
+                        <div class="kpi-value"><span id="kpi-bp">--/--</span> <small>mmHg</small></div>
+                        <div class="kpi-status" id="status-bp">正常</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">心率 (HR)</span>
+                            <i class="fas fa-heartbeat kpi-icon text-pink"></i>
+                        </div>
+                        <div class="kpi-value"><span id="kpi-hr">--</span> <small>bpm</small></div>
+                        <div class="kpi-status" id="status-hr">正常</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">體重 (Weight)</span>
+                            <i class="fas fa-weight kpi-icon text-blue"></i>
+                        </div>
+                        <div class="kpi-value"><span id="kpi-weight">--</span> <small>kg</small></div>
+                        <div class="kpi-status" id="status-weight">--</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">BMI 指數</span>
+                            <i class="fas fa-calculator kpi-icon text-green"></i>
+                        </div>
+                        <div class="kpi-value"><span id="kpi-bmi">--</span></div>
+                        <div class="kpi-status" id="status-bmi">--</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">今日步數</span>
+                            <i class="fas fa-walking kpi-icon text-orange"></i>
+                        </div>
+                        <div class="kpi-value"><span id="kpi-steps">--</span> <small>步</small></div>
+                        <div class="progress-bar"><div class="progress" style="width: 70%"></div></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">本週運動</span>
+                            <i class="fas fa-stopwatch kpi-icon text-indigo"></i>
+                        </div>
+                        <div class="kpi-value"><span id="kpi-exercise">--</span> <small>min</small></div>
+                        <div class="kpi-status">目標 150min</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">健康分數</span>
+                            <i class="fas fa-star kpi-icon text-yellow"></i>
+                        </div>
+                        <div class="kpi-value text-primary"><span id="kpi-score">--</span></div>
+                        <div class="kpi-status">良好</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">運動達成率</span>
+                            <i class="fas fa-check-circle kpi-icon text-emerald"></i>
+                        </div>
+                        <div class="kpi-value"><span id="kpi-completion">--</span> <small>%</small></div>
+                        <div class="progress-bar"><div class="progress" id="progress-completion" style="width: 0%"></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Data Input -->
+            <section id="input-section" class="content-section">
+                <div class="section-header">
+                    <h2>新增健康資料</h2>
+                    <p>輸入您的量測數據，系統將自動轉換為 FHIR Observation 格式。</p>
+                </div>
+                <div class="card">
+                    <form id="health-form" class="form-grid">
+                        <div class="form-group">
+                            <label>收縮壓 (Systolic)</label>
+                            <input type="number" id="input-systolic" value="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label>舒張壓 (Diastolic)</label>
+                            <input type="number" id="input-diastolic" value="80" required>
+                        </div>
+                        <div class="form-group">
+                            <label>體重 (kg)</label>
+                            <input type="number" id="input-weight" step="0.1" value="70" required>
+                        </div>
+                        <div class="form-group">
+                            <label>身高 (cm)</label>
+                            <input type="number" id="input-height" value="175" required>
+                        </div>
+                        <div class="form-group">
+                            <label>靜息心率 (bpm)</label>
+                            <input type="number" id="input-hr" value="70" required>
+                        </div>
+                        <div class="form-group">
+                            <label>今日步數</label>
+                            <input type="number" id="input-steps" value="8000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>運動類型</label>
+                            <select id="input-exercise-type">
+                                <option value="Running">跑步</option>
+                                <option value="Walking">健走</option>
+                                <option value="Cycling">騎行</option>
+                                <option value="Swimming">游泳</option>
+                                <option value="Strength">重訓</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>運動時間 (min)</label>
+                            <input type="number" id="input-duration" value="30" required>
+                        </div>
+                        <div class="form-group">
+                            <label>消耗熱量 (kcal)</label>
+                            <input type="number" id="input-calories" value="250" required>
+                        </div>
+                        <div class="form-group">
+                            <label>測量日期</label>
+                            <input type="date" id="input-date" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-save"></i> 儲存並轉換為 FHIR
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div id="success-toast" class="toast hidden">
+                    <i class="fas fa-check-circle"></i> 資料已成功轉換為 FHIR Observation 並存儲。
+                </div>
+            </section>
+
+            <!-- Section: FHIR JSON -->
+            <section id="fhir-section" class="content-section">
+                <div class="section-header">
+                    <h2>FHIR Resource 檢視器</h2>
+                    <p>查看健康數據如何被結構化為國際醫療標準 FHIR 格式。</p>
+                </div>
+                <div class="fhir-container">
+                    <div class="fhir-left">
+                        <div class="card">
+                            <h3><i class="fas fa-info-circle"></i> 當前數據摘要</h3>
+                            <div id="data-summary-list">
+                                <!-- Summary items inject here -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3><i class="fas fa-user-md"></i> Practitioner (醫護人員)</h3>
+                            <div class="practitioner-info">
+                                <p><strong>姓名：</strong> Dr. Weaver</p>
+                                <p><strong>ID：</strong> practitioner-001</p>
+                                <p><strong>職位：</strong> 平台主治醫師 / 導師</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fhir-right">
+                        <div class="code-header">
+                            <span><i class="fas fa-code"></i> FHIR Observation (Bundle)</span>
+                            <button class="btn-copy" id="btn-copy-fhir"><i class="fas fa-copy"></i> 複製</button>
+                        </div>
+                        <pre id="fhir-output"><code>{}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Trends -->
+            <section id="trend-section" class="content-section">
+                <div class="section-header">
+                    <h2>健康趨勢分析</h2>
+                    <p>透過圖表追蹤您的生理長期變化趨勢。</p>
+                </div>
+                <div class="chart-grid">
+                    <div class="card chart-card">
+                        <h3>血壓趨勢 (mmHg)</h3>
+                        <canvas id="chart-bp"></canvas>
+                    </div>
+                    <div class="card chart-card">
+                        <h3>體重與 BMI 趨勢</h3>
+                        <canvas id="chart-weight"></canvas>
+                    </div>
+                    <div class="card chart-card">
+                        <h3>心率趨勢 (bpm)</h3>
+                        <canvas id="chart-hr"></canvas>
+                    </div>
+                    <div class="card chart-card">
+                        <h3>每週運動量 (min)</h3>
+                        <canvas id="chart-exercise"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: AI Analysis -->
+            <section id="ai-section" class="content-section">
+                <div class="section-header">
+                    <h2>AI 健康智能分析</h2>
+                    <p>由 AI 規則引擎根據最新數據產生的個人化建議。</p>
+                </div>
+                <div class="ai-container">
+                    <div class="ai-header-card" id="ai-risk-card">
+                        <div class="ai-score-ring">
+                            <span id="ai-score-value">85</span>
+                            <small>健康分數</small>
+                        </div>
+                        <div class="ai-risk-status">
+                            <h3>風險等級：<span id="ai-risk-level">低風險</span></h3>
+                            <p id="ai-risk-desc">您的各項指標皆在正常範圍內，請繼續保持良好的生活習慣。</p>
+                        </div>
+                    </div>
+                    <div class="ai-suggestions">
+                        <div class="card suggest-card">
+                            <div class="suggest-icon"><i class="fas fa-utensils"></i></div>
+                            <div class="suggest-content">
+                                <h4>飲食建議</h4>
+                                <p id="ai-diet-suggest">建議攝取更多深色蔬菜與優質蛋白質，減少飽和脂肪酸的攝取。</p>
+                            </div>
+                        </div>
+                        <div class="card suggest-card">
+                            <div class="suggest-icon"><i class="fas fa-running"></i></div>
+                            <div class="suggest-content">
+                                <h4>運動建議</h4>
+                                <p id="ai-exercise-suggest">本週運動量已達標，可嘗試增加中高強度間歇訓練 (HIIT) 提升心肺功能。</p>
+                            </div>
+                        </div>
+                        <div class="card suggest-card">
+                            <div class="suggest-icon"><i class="fas fa-hospital"></i></div>
+                            <div class="suggest-content">
+                                <h4>就醫提醒</h4>
+                                <p id="ai-medical-suggest">血壓指標穩定，建議每週固定測量一次並上傳平台追蹤。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Share -->
+            <section id="share-section" class="content-section">
+                <div class="section-header">
+                    <h2>授權分享</h2>
+                    <p>您可以將健康資料安全地授權給指定的專業人員。</p>
+                </div>
+                <div class="card-grid-2">
+                    <div class="card">
+                        <h3><i class="fas fa-cog"></i> 授權設定</h3>
+                        <div class="form-group">
+                            <label>選擇授權對象</label>
+                            <select id="share-target">
+                                <option value="coach">健身教練 - Mike</option>
+                                <option value="nutritionist">營養師 - Sarah</option>
+                                <option value="doctor">主治醫師 - Dr. Weaver</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>分享資料範疇</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked disabled> 基本資料 (Patient)</label>
+                                <label><input type="checkbox" checked> 血壓紀錄</label>
+                                <label><input type="checkbox" checked> 體重與 BMI</label>
+                                <label><input type="checkbox" checked> 心率紀錄</label>
+                                <label><input type="checkbox" checked> 運動紀錄</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>授權期限</label>
+                            <select id="share-duration">
+                                <option value="24h">24 小時</option>
+                                <option value="7d">7 天</option>
+                                <option value="30d">30 天</option>
+                                <option value="forever">永久授權</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-emerald btn-block" id="btn-generate-share">
+                            <i class="fas fa-qrcode"></i> 產生授權 QR Code
+                        </button>
+                    </div>
+                    <div class="card qr-display-card">
+                        <h3><i class="fas fa-qrcode"></i> 授權 QR Code</h3>
+                        <div id="qrcode-container">
+                            <div id="qrcode"></div>
+                            <p class="qr-placeholder" id="qr-hint">點擊左側按鈕產生 QR Code</p>
+                        </div>
+                        <div class="qr-info hidden" id="qr-info">
+                            <p class="text-sm">掃描此 Code 即可取得本次授權資料的臨時訪問權限。</p>
+                            <div class="auth-hash-display">
+                                <small>Auth Hash:</small>
+                                <code id="temp-auth-hash">0x...</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Blockchain -->
+            <section id="blockchain-section" class="content-section">
+                <div class="section-header">
+                    <h2>區塊鏈授權紀錄</h2>
+                    <p>本平台利用區塊鏈不可篡改的特性，永久保存授權存取紀錄，確保資料追溯與安全性。</p>
+                </div>
+                <div class="card alert-info">
+                    <i class="fas fa-shield-alt"></i>
+                    <span><strong>技術說明：</strong> 區塊鏈僅儲存「授權操作」的雜湊值 (Hash) 與時間戳，並不儲存實際的健康數據，從根本上避免個資外洩風險。</span>
+                </div>
+                <div class="card scrollable-x">
+                    <table class="blockchain-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction Hash</th>
+                                <th>授權者</th>
+                                <th>被授權者</th>
+                                <th>資料範圍</th>
+                                <th>時間</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blockchain-logs">
+                            <!-- Logs inject here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Notifications -->
+            <section id="notify-section" class="content-section">
+                <div class="section-header">
+                    <h2>通知中心</h2>
+                    <p>您的健康動態與系統通知。</p>
+                </div>
+                <div class="timeline" id="notification-timeline">
+                    <!-- Notifications inject here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
